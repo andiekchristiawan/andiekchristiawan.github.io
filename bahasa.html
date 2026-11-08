@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAHASA KELAS 5 - ANDIEK</title>
+<style>
+body{background:#000;color:#fff;font-family:Arial;text-align:center;padding:20px}
+.box{background:#111;border:3px solid #ffcc00;border-radius:15px;padding:20px;max-width:450px;margin:0 auto}
+.soal{font-size:24px;font-weight:bold;color:#ffcc00;margin:15px 0;min-height:60px}
+.btn{padding:15px;font-size:18px;border:none;border-radius:10px;background:#ffcc00;margin:5px;font-weight:bold;width:90%}
+</style>
+</head>
+<body>
+<h1>BAHASA KELAS 5 - ANDIEK</h1>
+<div class="box">
+<p>SKOR: <span id="skor">0</span> | SOAL: <span id="nomor">1</span>/10</p>
+<div class="soal" id="soal">Loading...</div>
+<p id="hasil"></p>
+<button class="btn" onclick="jawab(0)" id="b0">A</button>
+<button class="btn" onclick="jawab(1)" id="b1">B</button>
+<button class="btn" onclick="jawab(2)" id="b2">C</button>
+<button class="btn" onclick="jawab(3)" id="b3">D</button>
+<br><br>
+<button class="btn" style="background:#ff0055;color:#fff" onclick="location.reload()">ULANG</button>
+</div>
+<br><a href="index.html" style="color:#fff">Balik ke Home</a>
+<script>
+var soalList=[
+{q:"Lawan kata dari RAJIN adalah...",p:["Malas","Pintar","Cepat","Kuat"],j:0},
+{q:"Persamaan kata dari SENANG adalah...",p:["Sedih","Gembira","Marah","Takut"],j:1},
+{q:"Kata baku dari apotik adalah...",p:["Apotik","Apotek","Aphotek","Apotiq"],j:1},
+{q:"Kalimat huruf kapital yang benar...",p:["andi pergi ke surabaya","Andi pergi ke Surabaya","andi Pergi Ke Surabaya","Andi pergi ke surabaya"],j:1},
+{q:"Lawan kata dari TINGGI adalah...",p:["Besar","Panjang","Rendah","Luas"],j:2},
+{q:"Kata berlari mendapat imbuhan...",p:["me-","ber-","di-","ter-"],j:1},
+{q:"Sinonim dari BESAR adalah...",p:["Kecil","Luas","Sempit","Pendek"],j:1},
+{q:"Penulisan tanggal yang benar...",p:["8 november 2026","8 November 2026","8 November 2026.","8 november 2026."],j:1},
+{q:"Lawan kata DATANG adalah...",p:["Pergi","Duduk","Lari","Diam"],j:0},
+{q:"Kata yang artinya sama dengan CERDAS adalah...",p:["Bodoh","Pintar","Malas","Lambat"],j:1}
+];
+var idx=0,skor=0;
+function tampil(){
+if(idx>=soalList.length){document.getElementById("soal").innerText="SELESAI! Skor akhir: "+skor;return;}
+document.getElementById("nomor").innerText=idx+1;
+document.getElementById("soal").innerText=soalList[idx].q;
+for(var i=0;i<4;i++){document.getElementById("b"+i).innerText=soalList[idx].p[i];}
+document.getElementById("hasil").innerText="";
+}
+function jawab(p){
+if(idx>=soalList.length) return;
+if(p==soalList[idx].j){skor+=10;document.getElementById("hasil").innerText="BENAR! +10";}
+else{document.getElementById("hasil").innerText="SALAH! Jawabannya: "+soalList[idx].p[soalList[idx].j];}
+document.getElementById("skor").innerText=skor;idx++;setTimeout(tampil,1000);
+}
+tampil();
+</script>
+</body>
+</html>
