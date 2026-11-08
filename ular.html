@@ -6,7 +6,7 @@
 <title>ULAR - ANDIEK</title>
 <style>
 body{background:#000;color:#00f0ff;font-family:Arial;text-align:center;margin:0;padding:20px}
-h1{margin:5px;text-shadow:0 0 15px #00f0ff}
+h1{margin:5px}
 canvas{background:#111;border:3px solid #00f0ff;border-radius:10px;max-width:95vw}
 .btn{padding:15px 20px;font-size:22px;border:none;border-radius:10px;background:#00f0ff;margin:5px;font-weight:bold}
 .score{font-size:22px;color:#fff}
@@ -14,34 +14,55 @@ a{color:#fff}
 </style>
 </head>
 <body>
-<h1>🐍 GAME ULAR - ANDIEK</h1>
+<h1>GAME ULAR - ANDIEK</h1>
 <p class="score">SKOR: <span id="skor">0</span> | TERBAIK: <span id="best">0</span></p>
 <canvas id="game" width="300" height="300"></canvas>
+<br><br>
+<button class="btn" onclick="mulai()">▶️ MULAI MAIN</button>
 <br><br>
 <button class="btn" onclick="ganti(0,-1)">⬆️</button><br>
 <button class="btn" onclick="ganti(-1,0)">⬅️</button>
 <button class="btn" onclick="ganti(1,0)">➡️</button><br>
 <button class="btn" onclick="ganti(0,1)">⬇️</button>
 <br><br>
-<button class="btn" style="background:#ff0055;color:#fff" onclick="location.reload()">🔄 MAIN LAGI</button>
+<button class="btn" style="background:#ff0055;color:#fff" onclick="location.reload()">🔄 ULANG</button>
 <br><br>
 <a href="index.html">⬅️ Balik ke Home</a>
 <script>
 let c=document.getElementById("game"),x=c.getContext("2d");
-let ular=[{x:150,y:150},{x:130,y:150},{x:110,y:150}],dx=20,dy=0,makan={x:50,y:50},skor=0,best=localStorage.getItem("bestUlar")||0;
+let ular=[{x:140,y:140},{x:120,y:140},{x:100,y:140}];
+let dx=0,dy=0,makan={x:200,y:200},skor=0,jalan=false;
+let best=localStorage.getItem("bestUlar")||0;
 document.getElementById("best").innerText=best;
-function ganti(a,b){if(dx!=-a*20||dy!=-b*20){dx=a*20;dy=b*20;}}
-document.addEventListener("keydown",e=>{if(e.key=="ArrowUp")ganti(0,-1);if(e.key=="ArrowDown")ganti(0,1);if(e.key=="ArrowLeft")ganti(-1,0);if(e.key=="ArrowRight")ganti(1,0);});
-function main(){
-let kepala={x:ular[0].x+dx,y:ular[0].y+dy};
-if(kepala.x<0||kepala.x>=300||kepala.y<0||kepala.y>=300||ular.some(s=>s.x==kepala.x&&s.y==kepala.y)){alert("GAME OVER! Skor lo: "+skor);if(skor>best){localStorage.setItem("bestUlar",skor);}location.reload();return;}
-ular.unshift(kepala);
-if(kepala.x==makan.x&&kepala.y==makan.y){skor+=10;document.getElementById("skor").innerText=skor;makan={x:Math.floor(Math.random()*15)*20,y:Math.floor(Math.random()*15)*20};}else{ular.pop();}
+function gambar(){
 x.fillStyle="#111";x.fillRect(0,0,300,300);
 x.fillStyle="red";x.fillRect(makan.x,makan.y,20,20);
-x.fillStyle="#00f0ff";ular.forEach(s=>x.fillRect(s.x,s.y,18,18));
+x.fillStyle="#00f0ff";ular.forEach(s=>x.fillRect(s.x+1,s.y+1,18,18));
 }
-setInterval(main,150);
+gambar();
+function mulai(){if(!jalan){jalan=true;dx=20;dy=0;loop();}}
+function ganti(a,b){
+if(!jalan){mulai();return;}
+if(a==1&&dx==-20)return; if(a==-1&&dx==20)return;
+if(b==1&&dy==-20)return; if(b==-1&&dy==20)return;
+dx=a*20; dy=b*20;
+}
+function loop(){
+if(!jalan) return;
+let kepala={x:ular[0].x+dx,y:ular[0].y+dy};
+if(kepala.x<0||kepala.x>=300||kepala.y<0||kepala.y>=300||ular.some(s=>s.x==kepala.x&&s.y==kepala.y)){
+jalan=false; alert("GAME OVER! Skor lo: "+skor);
+if(skor>best){localStorage.setItem("bestUlar",skor);}
+location.reload(); return;
+}
+ular.unshift(kepala);
+if(kepala.x==makan.x&&kepala.y==makan.y){
+skor+=10; document.getElementById("skor").innerText=skor;
+makan={x:Math.floor(Math.random()*15)*20,y:Math.floor(Math.random()*15)*20};
+}else{ular.pop();}
+gambar();
+setTimeout(loop,150);
+}
 </script>
 </body>
 </html>
